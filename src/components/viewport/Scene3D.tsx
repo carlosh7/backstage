@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Grid, ContactShadows } from '@react-three/drei'
+import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
 import { useEditorStore } from '../../stores/editorStore'
 import SceneContent from './SceneContent'
 
@@ -39,6 +40,11 @@ export default function Scene3D() {
         <SceneContent />
         <OrbitControls makeDefault enableDamping dampingFactor={0.15} maxPolarAngle={Math.PI / 2.05} minDistance={1} maxDistance={30} />
         <color attach="background" args={['#1a1a2e']} />
+
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.6} luminanceSmoothing={0.9} intensity={0.3} />
+          <ToneMapping mode={2} />
+        </EffectComposer>
       </Suspense>
     </Canvas>
   )
