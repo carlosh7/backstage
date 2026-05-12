@@ -1,10 +1,13 @@
 {
   "name": "backstage",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "type": "module",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "api": "tsx apps/api/src/index.ts"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -15,12 +18,11 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/postprocessing": "^2.16.0",
     "zustand": "^5.0.5",
-    "yjs": "^13.6.24",
+    "nanoid": "^5.1.5",
     "hono": "^4.8.0",
     "better-sqlite3": "^11.9.1"
   },
   "devDependencies": {
-    "turbo": "^2.5.0",
     "typescript": "^5.8.3",
     "vite": "^8.0.11",
     "@vitejs/plugin-react": "^4.5.4",
