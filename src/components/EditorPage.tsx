@@ -3,7 +3,9 @@ import { useEditorStore } from '../stores/editorStore'
 import Scene3D from './viewport/Scene3D'
 import ObjectCatalog from './catalog/ObjectCatalog'
 import RightPanel from './layout/RightPanel'
+import LayoutModal from './layout/LayoutModal'
 import { localPlans } from '../utils/localStorage'
+import { exportPDF } from '../engine/exportPDF'
 
 export default function EditorPage() {
   const objects = useEditorStore((s) => s.objects)
@@ -14,6 +16,7 @@ export default function EditorPage() {
   const snapToGrid = useEditorStore((s) => s.snapToGrid)
   const gridSize = useEditorStore((s) => s.gridSize)
   const [search, setSearch] = useState('')
+  const [showLayout, setShowLayout] = useState(false)
   const planIdRef = useRef<string | null>(null)
 
   // Initialize plan
@@ -82,6 +85,24 @@ export default function EditorPage() {
           <span className="text-xs text-text-secondary">Event Design Studio</span>
         </div>
         <div className="flex items-center gap-3 text-xs">
+          <button
+            onClick={() => setShowLayout(true)}
+            className="px-2 py-1 bg-backstage/20 text-backstage rounded hover:bg-backstage/30 transition-colors text-[10px] font-medium"
+          >
+            + Layout
+          </button>
+          <button
+            onClick={() => {
+              const blob = exportPDF(objects)
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url; a.download = 'backstage-plano.pdf'; a.click()
+              URL.revokeObjectURL(url)
+            }}
+            className="px-2 py-1 bg-backstage/20 text-backstage rounded hover:bg-backstage/30 transition-colors text-[10px] font-medium"
+          >
+            PDF
+          </button>
           <span className="text-text-secondary">{objects.length} objetos</span>
           {selectedIds.length > 0 && (
             <span className="text-backstage font-medium">{selectedIds.length} seleccionados</span>
@@ -116,7 +137,10 @@ export default function EditorPage() {
         <RightPanel />
       </div>
 
-      {/* StatusBar */}
+      {/* Layout modal */}
+{showLayout && <LayoutModal onClose={() => setShowLayout(false)} />}
+
+{/* StatusBar */}
       <footer className="flex items-center justify-between px-4 py-1 bg-surface-2 border-t border-border text-[10px] text-text-secondary shrink-0">
         <span>Backstage v0.3.0</span>
         <div className="flex items-center gap-3">
