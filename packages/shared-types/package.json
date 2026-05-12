@@ -1,0 +1,18 @@
+{
+  "name": "@backstage/shared-types",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "check-types": "tsc -b --noEmit"
+  },
+  "version": "0.1.0"
+}

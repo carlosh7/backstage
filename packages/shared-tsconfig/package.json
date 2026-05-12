@@ -1,0 +1,9 @@
+{
+  "name": "@backstage/shared-tsconfig",
+  "private": true,
+  "main": "tsconfig.base.json",
+  "exports": {
+    ".": "./tsconfig.base.json"
+  },
+  "version": "0.1.0"
+}

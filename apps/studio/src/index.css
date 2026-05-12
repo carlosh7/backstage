@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-backstage: oklch(0.55 0.2 265);
+  --color-surface: #0f172a;
+  --color-surface-2: #1e293b;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --font-display: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}

@@ -1,0 +1,16 @@
+{
+  "extends": "../../packages/shared-tsconfig/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["vite/client"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "noEmit": false,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
