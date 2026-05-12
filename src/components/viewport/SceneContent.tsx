@@ -1,18 +1,22 @@
-import { useEditorStore } from '../../stores/editorStore'
-import type { FloorPlanObject } from '../../../packages/shared-types/src'
+import { useCallback } from 'react'
 import * as THREE from 'three'
 import { useMemo } from 'react'
-
-const tempVec = new THREE.Vector3()
-const tempScale = new THREE.Vector3()
+import { useEditorStore } from '../../stores/editorStore'
+import type { FloorPlanObject } from '../../../packages/shared-types/src'
 
 function ObjectMesh({ obj }: { obj: FloorPlanObject }) {
+  const selectObject = useEditorStore((s) => s.selectObject)
+  const selectedIds = useEditorStore((s) => s.selectedIds)
+  const isSelected = selectedIds.includes(obj.id)
+
   const geometry = useMemo(() => {
-    const box = new THREE.BoxGeometry(obj.scale.x, obj.scale.y, obj.scale.z)
-    return box
+    return new THREE.BoxGeometry(obj.scale.x, obj.scale.y, obj.scale.z)
   }, [obj.scale.x, obj.scale.y, obj.scale.z])
 
-  const color = obj.color ?? '#64748b'
+  const handlePointerDown = useCallback((e: any) => {
+    e.stopPropagation()
+    selectObject(obj.id, e.nativeEvent?.shiftKey || false)
+  }, [obj.id, selectObject])
 
   return (
     <mesh
@@ -21,15 +25,21 @@ function ObjectMesh({ obj }: { obj: FloorPlanObject }) {
       rotation={[0, obj.rotation, 0]}
       castShadow
       receiveShadow
+      onPointerDown={handlePointerDown}
     >
-      <meshStandardMaterial color={color} roughness={0.5} metalness={0.1} />
+      <meshStandardMaterial
+        color={obj.color ?? '#64748b'}
+        roughness={0.5}
+        metalness={0.1}
+        emissive={isSelected ? new THREE.Color('#3b82f6') : new THREE.Color('#000000')}
+        emissiveIntensity={isSelected ? 0.3 : 0}
+      />
     </mesh>
   )
 }
 
 export default function SceneContent() {
   const objects = useEditorStore((s) => s.objects)
-  const selectedIds = useEditorStore((s) => s.selectedIds)
 
   return (
     <group>

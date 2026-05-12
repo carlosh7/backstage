@@ -14,8 +14,8 @@ interface EditorState {
   showGrid: boolean
   history: HistoryEntry[]
   historyIndex: number
-  pendingSave: boolean
-
+  setPendingSave: (v: boolean) => void
+  
   addObject: (obj: FloorPlanObject) => void
   removeObject: (id: string) => void
   updateObject: (id: string, partial: Partial<FloorPlanObject>) => void
@@ -95,6 +95,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     historyIndex: 0,
     selectedIds: [],
   }),
+
+  setPendingSave: (v) => set({ pendingSave: v }),
 
   undo: () => {
     const { historyIndex, history } = get()

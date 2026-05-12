@@ -1,13 +1,77 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useEditorStore } from '../stores/editorStore'
 import Scene3D from './viewport/Scene3D'
 import ObjectCatalog from './catalog/ObjectCatalog'
+import RightPanel from './layout/RightPanel'
+import { localPlans } from '../utils/localStorage'
 
 export default function EditorPage() {
   const objects = useEditorStore((s) => s.objects)
   const selectedIds = useEditorStore((s) => s.selectedIds)
+  const removeObject = useEditorStore((s) => s.removeObject)
+  const pendingSave = useEditorStore((s) => s.pendingSave)
   const viewMode = useEditorStore((s) => s.viewMode)
+  const snapToGrid = useEditorStore((s) => s.snapToGrid)
+  const gridSize = useEditorStore((s) => s.gridSize)
   const [search, setSearch] = useState('')
+  const planIdRef = useRef<string | null>(null)
+
+  // Initialize plan
+  useEffect(() => {
+    if (!planIdRef.current) {
+      const existing = localPlans.list()
+      if (existing.length > 0) {
+        const plan = existing[0]
+        planIdRef.current = plan.id
+        useEditorStore.getState().loadObjects(plan.objects)
+      } else {
+        const plan = localPlans.create('Nuevo layout')
+        planIdRef.current = plan.id
+      }
+    }
+  }, [])
+
+  // Auto-save every 30s when pending
+  useEffect(() => {
+    if (!planIdRef.current) return
+    const interval = setInterval(() => {
+      if (useEditorStore.getState().pendingSave && planIdRef.current) {
+        const state = useEditorStore.getState()
+        localPlans.update(planIdRef.current, { objects: state.objects, settings: { snapToGrid, gridSize } })
+        state.setPendingSave?.(false)
+      }
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [snapToGrid, gridSize])
+
+  // Save on unload
+  useEffect(() => {
+    const handleUnload = () => {
+      if (planIdRef.current) {
+        const state = useEditorStore.getState()
+        localPlans.update(planIdRef.current, { objects: state.objects })
+      }
+    }
+    window.addEventListener('beforeunload', handleUnload)
+    return () => window.removeEventListener('beforeunload', handleUnload)
+  }, [])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (document.activeElement?.tagName === 'INPUT') return
+        selectedIds.forEach((id) => removeObject(id))
+      }
+      if (e.key === 'z' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        if (e.shiftKey) useEditorStore.getState().redo()
+        else useEditorStore.getState().undo()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [selectedIds, removeObject])
 
   return (
     <div className="w-full h-screen flex flex-col bg-surface text-text select-none">
@@ -20,7 +84,7 @@ export default function EditorPage() {
         <div className="flex items-center gap-3 text-xs">
           <span className="text-text-secondary">{objects.length} objetos</span>
           {selectedIds.length > 0 && (
-            <span className="text-backstage">{selectedIds.length} seleccionados</span>
+            <span className="text-backstage font-medium">{selectedIds.length} seleccionados</span>
           )}
         </div>
       </header>
@@ -49,21 +113,14 @@ export default function EditorPage() {
         </main>
 
         {/* RightPanel */}
-        <aside className="w-56 bg-surface-2 border-l border-border p-3 shrink-0">
-          <p className="text-xs text-text-secondary uppercase tracking-wider mb-2">Propiedades</p>
-          {selectedIds.length === 0 ? (
-            <p className="text-xs text-text-secondary italic">Selecciona un objeto</p>
-          ) : (
-            <p className="text-xs text-text-secondary">{selectedIds.length} objeto(s) seleccionados</p>
-          )}
-        </aside>
+        <RightPanel />
       </div>
 
       {/* StatusBar */}
       <footer className="flex items-center justify-between px-4 py-1 bg-surface-2 border-t border-border text-[10px] text-text-secondary shrink-0">
-        <span>Backstage v0.1.0</span>
+        <span>Backstage v0.3.0</span>
         <div className="flex items-center gap-3">
-          <span>{viewMode}</span>
+          <span>{viewMode} · {objects.length} objetos · {selectedIds.length} seleccionados</span>
         </div>
       </footer>
     </div>
