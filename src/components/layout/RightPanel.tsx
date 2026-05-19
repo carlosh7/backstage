@@ -9,7 +9,8 @@ export default function RightPanel() {
   const updateObject = useEditorStore((s) => s.updateObject)
   const removeObject = useEditorStore((s) => s.removeObject)
 
-  const selected = selectedIds.length === 1 ? objects.find((o) => o.id === selectedIds[0]) : null
+  const safeObjs = objects ?? []
+  const selected = (selectedIds?.length ?? 0) === 1 ? safeObjs.find((o) => o.id === selectedIds[0]) : null
 
   return (
     <aside className="w-56 bg-surface-2 border-l border-border flex flex-col shrink-0">

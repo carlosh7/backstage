@@ -136,7 +136,7 @@ export default function EditorPage() {
         <span>Backstage v0.3.0</span>
         <div className="flex items-center gap-3">
           <button onClick={() => setShowLeft(!showLeft)} className="text-text-secondary hover:text-text transition-colors">{showLeft ? '◀' : '▶'}</button>
-          <span>{viewMode} · {objects.length} objetos</span>
+          <span>{viewMode} · {objects?.length ?? 0} objetos</span>
           <button onClick={() => setShowRight(!showRight)} className="text-text-secondary hover:text-text transition-colors">{showRight ? '▶' : '◀'}</button>
         </div>
       </footer>

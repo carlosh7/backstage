@@ -3,14 +3,16 @@ import { useEditorStore } from '../../stores/editorStore'
 export default function RiggingPanel() {
   const objects = useEditorStore((s) => s.objects)
 
-  const trusses = objects.filter((o) => o.category === 'truss')
-  const lights = objects.filter((o) => o.category === 'lighting')
-  const audio = objects.filter((o) => o.category === 'audio')
-  const video = objects.filter((o) => o.category === 'video')
+  const safe = objects ?? []
 
-  const totalWeight = objects.reduce((s, o) => s + (o.metadata?.weight ?? 0), 0)
-  const totalPower = objects.reduce((s, o) => s + (o.metadata?.power ?? 0), 0)
-  const totalPrice = objects.reduce((s, o) => s + (o.metadata?.price ?? 0), 0)
+  const trusses = safe.filter((o) => o.category === 'truss')
+  const lights = safe.filter((o) => o.category === 'lighting')
+  const audio = safe.filter((o) => o.category === 'audio')
+  const video = safe.filter((o) => o.category === 'video')
+
+  const totalWeight = safe.reduce((s, o) => s + (o.metadata?.weight ?? 0), 0)
+  const totalPower = safe.reduce((s, o) => s + (o.metadata?.power ?? 0), 0)
+  const totalPrice = safe.reduce((s, o) => s + (o.metadata?.price ?? 0), 0)
 
   return (
     <div className="p-3 space-y-3 text-xs">

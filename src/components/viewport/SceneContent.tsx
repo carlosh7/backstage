@@ -43,7 +43,7 @@ export default function SceneContent() {
 
   return (
     <group>
-      {objects.map((obj) => (
+      {objects?.map((obj) => (
         <ObjectMesh key={obj.id} obj={obj} />
       ))}
     </group>
