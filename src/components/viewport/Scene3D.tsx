@@ -4,6 +4,7 @@ import { OrbitControls, Grid, ContactShadows } from '@react-three/drei'
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
 import { useEditorStore } from '../../stores/editorStore'
 import SceneContent from './SceneContent'
+import ErrorBoundary from '../ErrorBoundary'
 
 export default function Scene3D() {
   const showGrid = useEditorStore((s) => s.showGrid)
@@ -37,7 +38,9 @@ export default function Scene3D() {
         )}
 
         <ContactShadows position={[0, 0, 0]} opacity={0.5} width={20} height={20} blur={2.5} far={15} />
-        <SceneContent />
+        <ErrorBoundary>
+          <SceneContent />
+        </ErrorBoundary>
         <OrbitControls makeDefault enableDamping dampingFactor={0.15} maxPolarAngle={Math.PI / 2.05} minDistance={1} maxDistance={30} />
         <color attach="background" args={['#1a1a2e']} />
 
