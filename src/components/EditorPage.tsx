@@ -95,8 +95,8 @@ export default function EditorPage() {
           <button onClick={() => { const blob = exportPDF(objects); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'backstage-plano.pdf'; a.click(); URL.revokeObjectURL(url) }} className="px-2 py-1 bg-backstage/20 text-backstage rounded hover:bg-backstage/30 transition-colors text-[10px] font-medium">PDF</button>
           <button onClick={() => setShowMarketplace(true)} className="px-2 py-1 bg-backstage/20 text-backstage rounded hover:bg-backstage/30 transition-colors text-[10px] font-medium">🛍️</button>
           <button onClick={() => setShowWhiteLabel(true)} className="px-2 py-1 bg-backstage/20 text-backstage rounded hover:bg-backstage/30 transition-colors text-[10px] font-medium">⚙️</button>
-          <span className="text-text-secondary hidden sm:inline">{objects.length} objetos</span>
-          {selectedIds.length > 0 && (
+          <span className="text-text-secondary hidden sm:inline">{(objects || []).length} objetos</span>
+          {selectedIds?.length > 0 && (
             <span className="text-backstage font-medium">{selectedIds.length} seleccionados</span>
           )}
         </div>

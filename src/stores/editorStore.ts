@@ -61,7 +61,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   })),
 
   selectObject: (id, shift = false) => set((s) => {
-    if (!id) return { selectedId: null, selectedIds: [] }
+    if (!id) return { selectedIds: [] }
     if (shift) {
       const ids = s.selectedIds.includes(id)
         ? s.selectedIds.filter((i) => i !== id)
