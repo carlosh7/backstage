@@ -90,8 +90,8 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   setGridSize: (size) => set({ gridSize: size }),
 
   loadObjects: (objects) => set({
-    objects,
-    history: [{ objects }],
+    objects: objects ?? [],
+    history: [{ objects: objects ?? [] }],
     historyIndex: 0,
     selectedIds: [],
   }),

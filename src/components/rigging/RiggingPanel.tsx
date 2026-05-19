@@ -33,7 +33,7 @@ export default function RiggingPanel() {
           <p className="text-[10px] text-text-secondary">Valor equipos</p>
         </div>
         <div className="bg-surface rounded p-2 text-center">
-          <p className="text-lg font-bold text-text">{objects.length}</p>
+          <p className="text-lg font-bold text-text">{safe.length}</p>
           <p className="text-[10px] text-text-secondary">Objetos total</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function RiggingPanel() {
         <p className="text-text-secondary text-[10px] mb-1">Compliance:</p>
         <div className="flex items-center gap-2 text-[10px]">
           <span className="w-2 h-2 rounded-full bg-green-400" />
-          <span className="text-text-secondary">Ocupación: {objects.length} personas</span>
+          <span className="text-text-secondary">Ocupación: {safe.length} personas</span>
         </div>
         <div className="flex items-center gap-2 text-[10px]">
           <span className="w-2 h-2 rounded-full bg-green-400" />

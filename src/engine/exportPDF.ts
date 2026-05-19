@@ -1,7 +1,7 @@
 import { jsPDF } from 'jspdf'
 import type { FloorPlanObject } from '../../packages/shared-types/src'
 
-export function exportPDF(objects: FloorPlanObject[]) {
+export function exportPDF(objects: FloorPlanObject[] = []) {
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' })
 
   // Background

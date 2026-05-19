@@ -70,7 +70,7 @@ export default function EditorPage() {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (document.activeElement?.tagName === 'INPUT') return
-        selectedIds.forEach((id) => removeObject(id))
+        selectedIds?.forEach((id) => removeObject(id))
       }
       if (e.key === 'z' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
