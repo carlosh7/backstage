@@ -4,8 +4,8 @@ import RiggingPanel from '../rigging/RiggingPanel'
 
 export default function RightPanel() {
   const [tab, setTab] = useState<'properties' | 'rigging'>('properties')
-  const selectedIds = useEditorStore((s) => s.selectedIds)
-  const objects = useEditorStore((s) => s.objects)
+  const selectedIds = useEditorStore((s) => s.selectedIds) ?? []
+  const objects = useEditorStore((s) => s.objects) ?? []
   const updateObject = useEditorStore((s) => s.updateObject)
   const removeObject = useEditorStore((s) => s.removeObject)
 

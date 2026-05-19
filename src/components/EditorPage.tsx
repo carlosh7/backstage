@@ -10,8 +10,8 @@ import { localPlans } from '../utils/localStorage'
 import { exportPDF } from '../engine/exportPDF'
 
 export default function EditorPage() {
-  const objects = useEditorStore((s) => s.objects)
-  const selectedIds = useEditorStore((s) => s.selectedIds)
+  const objects = useEditorStore((s) => s.objects) ?? []
+  const selectedIds = useEditorStore((s) => s.selectedIds) ?? []
   const removeObject = useEditorStore((s) => s.removeObject)
   const pendingSave = useEditorStore((s) => s.pendingSave)
   const viewMode = useEditorStore((s) => s.viewMode)

@@ -6,8 +6,8 @@ import type { FloorPlanObject } from '../../../packages/shared-types/src'
 
 function ObjectMesh({ obj }: { obj: FloorPlanObject }) {
   const selectObject = useEditorStore((s) => s.selectObject)
-  const selectedIds = useEditorStore((s) => s.selectedIds)
-  const isSelected = selectedIds?.includes(obj.id) ?? false
+  const selectedIds = useEditorStore((s) => s.selectedIds) ?? []
+  const isSelected = selectedIds.includes(obj.id)
 
   const geometry = useMemo(() => {
     return new THREE.BoxGeometry(obj.scale.x, obj.scale.y, obj.scale.z)
@@ -39,7 +39,7 @@ function ObjectMesh({ obj }: { obj: FloorPlanObject }) {
 }
 
 export default function SceneContent() {
-  const objects = useEditorStore((s) => s.objects)
+  const objects = useEditorStore((s) => s.objects) ?? []
 
   return (
     <group>

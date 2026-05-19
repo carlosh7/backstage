@@ -1,7 +1,7 @@
 import { useEditorStore } from '../../stores/editorStore'
 
 export default function RiggingPanel() {
-  const objects = useEditorStore((s) => s.objects)
+  const objects = useEditorStore((s) => s.objects) ?? []
 
   const safe = objects ?? []
 
